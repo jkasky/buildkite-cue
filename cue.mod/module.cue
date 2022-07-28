@@ -1,1 +1,1 @@
-module: "gitlab.com/jkasky/buildkite-cuelang-pipeline"
+module: "gitlab.com/jkasky/buildkite-cue"

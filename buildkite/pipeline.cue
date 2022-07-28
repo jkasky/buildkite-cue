@@ -1,4 +1,4 @@
-package base
+package buildkite
 
 import (
     "list"
@@ -38,7 +38,7 @@ import (
 
     branches?: string
 
-    "if"?: string
+    if?: string
 
     // TODO: make a type for this?
     depends_on?: string | [string, ...string]
@@ -108,17 +108,17 @@ import (
 
     env?: #env
 
-    "if"?: string
+    if?: string
 
     key?: string
 
-    // matrix
+    // TOOD: implement matrix
     // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
     // https://buildkite.com/docs/pipelines/command-step#matrix-attributes
 
     parallelism?: int & >1
 
-    // plugins
+    // TODO: implement plugins
     // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
 
     retry?: this={
@@ -183,7 +183,7 @@ import (
 
     branches?: string
 
-    "if"?: string
+    if?: string
 
     // TODO: make a type for this?
     depends_on?: string | [string, ...string]
@@ -204,7 +204,7 @@ import (
 
     branches?: string
 
-    "if"?: string
+    if?: string
 
     depends_on?: string | [string, ...string]
 
@@ -232,7 +232,7 @@ import (
 
     continue_on_failure?: bool
 
-    "if"?: string
+    if?: string
 
     // TODO: see if this can validate whether the strings match named steps
     depends_on?: [string, ...string]

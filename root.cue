@@ -1,6 +1,6 @@
-import "gitlab.com/jkasky/buildkite-cuelang-pipeline/base"
+import "gitlab.com/jkasky/buildkite-cue/buildkite"
 
-base.#pipeline & {
+buildkite.#pipeline & {
 
 	agents: os: "linux"
 
@@ -39,6 +39,7 @@ base.#pipeline & {
 		},
         {
             block: "stop"
+            if: "true == false"
             fields: [
                 {text: "text", key: "text-key", required: false}
             ]
