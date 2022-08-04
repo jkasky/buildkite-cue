@@ -5,7 +5,7 @@ import (
 )
 
 #PipelineTest: {
-    schema: buildkite.#pipeline
+    schema: buildkite.#Pipeline
     expect: bool | *true
     yaml: string | *"---"
 }

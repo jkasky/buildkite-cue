@@ -5,9 +5,9 @@ import (
 )
 
 #AgentTest: {
-    schema: buildkite.#agents
+    schema: buildkite.#Agents
     expect: bool | *true
-    yaml: string | *""
+    yaml: string | *"---"
 }
 
 tests: {

@@ -5,9 +5,9 @@ import (
 )
 
 #EnvTest: {
-    schema: buildkite.#env
+    schema: buildkite.#Environment
     expect: bool | *true
-    yaml: string | *""
+    yaml: string | *"---"
 }
 
 tests: {

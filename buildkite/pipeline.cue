@@ -5,31 +5,31 @@ import (
 )
 
 
-#pipeline: {
-    agents: #agents
+#Pipeline: {
+    agents: #Agents
     
-    env?: #env
+    env?: #Environment
     
-    steps: [#step_type, ...#step_type]
+    steps: [#Step, ...#Step]
 }
 
-#agents: {
+#Agents: {
     queue: string | *"default"
     [string]: string
 }
 
-#env: {
+#Environment: {
     [string]: bool | number | string
 }
 
-#step_type: #block_step | #command_step | #group_step | #input_step | #trigger_step | #wait_step
+#Step: #BlockStep | #CommandStep | #GroupStep | #InputStep | #TriggerStep | #WaitStep
 
-#block_step: {
+#BlockStep: {
     block: string
 
     prompt?: string
 
-    fields?: [#block_step_field, ...#block_step_field]
+    fields?: [#BlockStepField, ...#BlockStepField]
 
     blocked_state: "failed" | *"passed" | "running"
 
@@ -46,9 +46,9 @@ import (
     allow_dependency_failure: bool | *false
 }
 
-#block_step_field: #text_field | #select_field
+#BlockStepField: #StepTextField | #StepSelectField
 
-#text_field: {
+#StepTextField: {
     text: string
 
     // TODO: make type for key that validates pattern
@@ -61,30 +61,30 @@ import (
     hint?: string
 }
 
-#select_field: {
+#StepSelectField: {
     select: string
 
     key: string
 
-    options: [#select_option, ...#select_option]
+    options: [#StepSelectFieldOption, ...#StepSelectFieldOption]
 }
 
-#select_option: {
+#StepSelectFieldOption: {
     label: string
     value: string
 }
 
-#command_step: {
+#CommandStep: {
     label: string
-    #command_field
-    #command_opts
+    #CommandStepField
+    #CommandStepOptions
 }
 
-#command_field: {command: string} | {commands: [string, ...string]}
+#CommandStepField: {command: string} | {commands: [string, ...string]}
 
 // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
-#command_opts: {
-    agents?: #agents
+#CommandStepOptions: {
+    agents?: #Agents
     
     allow_dependency_failure: bool | *false
 
@@ -103,7 +103,7 @@ import (
 
     depends_on?: [string, ...string]
 
-    env?: #env
+    env?: #Environment
 
     if?: string
 
@@ -120,9 +120,9 @@ import (
 
     retry?: this={
         automatic?: bool | 
-            #retry_automatic_condition |
-            [#retry_automatic_condition, ...#retry_automatic_condition]
-        manual?: bool | #retry_manual_attributes
+            #RetryAutomaticCondition |
+            [#RetryAutomaticCondition, ...#RetryAutomaticCondition]
+        manual?: bool | #RetryManualAttributes
 
         // Retry must have automatic and/or manual fields.
         #AnyOf: true & list.MinItems([
@@ -140,12 +140,12 @@ import (
     priority: int | *0
 }
 
-#retry_automatic_condition: {
+#RetryAutomaticCondition: {
     exit_status: "*" | int & != 0
     limit: int & >0 & <= 10
 }
 
-#retry_manual_attributes: this={
+#RetryManualAttributes: this={
     allowed: bool | *true
     permit_on_pass?: bool
     if !this.allowed {
@@ -153,7 +153,7 @@ import (
     }
 }
 
-#group_step: {
+#GroupStep: {
     group: string
 
     allow_dependency_failure: bool | *false
@@ -166,17 +166,17 @@ import (
 
     notify?: string
 
-    steps: [#group_step_type, ...#group_step_type]
+    steps: [#GroupStepMemberStep, ...#GroupStepMemberStep]
 }
 
-#group_step_type: #command_step | #trigger_step | #wait_step
+#GroupStepMemberStep: #CommandStep | #TriggerStep | #WaitStep
 
-#input_step: {
+#InputStep: {
     input: string
     
     prompt?: string
 
-    fields: [#input_step_field, ...#input_step_field]
+    fields: [#InputStepField, ...#InputStepField]
 
     branches?: string
 
@@ -188,12 +188,12 @@ import (
     allow_dependency_failure: bool | *false
 }
 
-#input_step_field: #text_field | #select_field
+#InputStepField: #StepTextField | #StepSelectField
 
-#trigger_step: {
-    trigger: #slug
+#TriggerStep: {
+    trigger: #SlugString
 
-    build?: #build_attributes
+    build?: #BuildAttributes
 
     label: string
 
@@ -210,21 +210,21 @@ import (
     skip: bool | string
 }
 
-#build_attributes: {
+#BuildAttributes: {
     message?: string
 
     commit?: string
 
     branch?: string
 
-    meta_data?: #env 
+    meta_data?: #Environment 
 
-    env?: #env
+    env?: #Environment
 }
 
-#slug: string & =~"^[a-zA-Z0-9-]+$"
+#SlugString: string & =~"^[a-zA-Z0-9-]+$"
 
-#wait_step: "wait" | {
+#WaitStep: "wait" | {
     wait: null
 
     continue_on_failure?: bool
