@@ -10,10 +10,7 @@ import (
     
     env?: #env
     
-    steps: [
-        #step_type,
-        ...#step_type
-    ]
+    steps: [#step_type, ...#step_type]
 }
 
 #agents: {
