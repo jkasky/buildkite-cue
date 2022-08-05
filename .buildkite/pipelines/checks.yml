@@ -11,5 +11,6 @@ steps:
   - label: Test Schema
     depends_on: build
     command: |
-      buildkite-agent artifact download run-test
+      buildkite-agent artifact download run-test .
+      chmod 755 run-test
       ./run-test
