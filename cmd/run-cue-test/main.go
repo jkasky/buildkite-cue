@@ -80,7 +80,7 @@ func main() {
 					failCount++
 					cfmt.Printf("[{{FAIL}}::red|bold] %s\n", label)
 					fmt.Println(value.Source().Pos())
-					fmt.Printf("Expected YAML to be invalid:\n%s", c.Yaml)
+					fmt.Printf("Expected YAML to be invalid:\n%s\n", c.Yaml)
 				} else {
 					passCount++
 					cfmt.Printf("[{{PASS}}::lightGreen|bold] %s\n", label)

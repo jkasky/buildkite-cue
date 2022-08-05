@@ -40,7 +40,7 @@ import (
     // TODO: make a type for this?
     depends_on?: string | [string, ...string]
 
-    // TODO: possible to validate this is unique?
+    // TODO: possible to validate this is a unique value within the pipeline?
     key?: string
 
     allow_dependency_failure: bool | *false
