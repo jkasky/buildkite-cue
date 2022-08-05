@@ -75,7 +75,7 @@ import (
 }
 
 #CommandStep: {
-    label: string
+    label?: string
     #CommandStepField
     #CommandStepOptions
 }
@@ -154,11 +154,11 @@ import (
 }
 
 #GroupStep: {
-    group: string
+    group: string | *null
 
     allow_dependency_failure: bool | *false
 
-    depends_on: [string, ...string]
+    depends_on?: [string, ...string]
 
     key?: string
 
@@ -195,9 +195,9 @@ import (
 
     build?: #BuildAttributes
 
-    label: string
+    label?: string
 
-    async: bool | false
+    async: bool | *false
 
     branches?: string
 
@@ -207,7 +207,7 @@ import (
 
     allow_dependency_failure: bool | *false
 
-    skip: bool | string
+    skip?: bool | string
 }
 
 #BuildAttributes: {

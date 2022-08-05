@@ -6,7 +6,7 @@ import (
 
 #AgentTest: {
     schema: buildkite.#Agents
-    expect: bool | *true
+    isValid: bool | *true
     yaml: string | *"---"
 }
 
@@ -20,11 +20,11 @@ tests: {
     }
 	when_queue_is_a_number: #AgentTest & {
 		yaml: "queue: 1"
-        expect: false
+        isValid: false
 	}
     when_queue_is_a_bool: #AgentTest & {
         yaml: "queue: true"
-        expect: false
+        isValid: false
     }
 	when_queue_is_string: #AgentTest & {
 		yaml: "queue: default"

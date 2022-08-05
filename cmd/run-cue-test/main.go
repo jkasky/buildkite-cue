@@ -19,15 +19,15 @@ type SchemaTestSuite struct {
 }
 
 type SchemaTestCase struct {
-	Yaml   string
-	Expect bool
+	Yaml    string
+	IsValid bool
 }
 
 func main() {
 	var files []string
 
 	filepath.Walk(
-		"/Users/jk/Developer/buildkite-cuelang-pipeline/test",
+		"test",
 		func(path string, info fs.FileInfo, err error) error {
 			if !info.IsDir() {
 				files = append(files, path)
@@ -70,13 +70,13 @@ func main() {
 				schema := value.LookupPath(cue.ParsePath("schema"))
 				bytes := []byte(c.Yaml)
 				err = yaml.Validate(bytes, schema)
-				if err != nil && c.Expect {
+				if err != nil && c.IsValid {
 					failCount++
 					cfmt.Printf("[{{FAIL}}::red|bold] %s\n", label)
 					fmt.Println(value.Source().Pos())
 					details := errors.Details(err, nil)
 					cfmt.Printf("{{%s}}::red", details)
-				} else if err == nil && !c.Expect {
+				} else if err == nil && !c.IsValid {
 					failCount++
 					cfmt.Printf("[{{FAIL}}::red|bold] %s\n", label)
 					fmt.Println(value.Source().Pos())

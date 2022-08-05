@@ -6,7 +6,7 @@ import (
 
 #EnvTest: {
     schema: buildkite.#Environment
-    expect: bool | *true
+    isValid: bool | *true
     yaml: string | *"---"
 }
 
@@ -19,7 +19,7 @@ tests: {
             a_var:
               with_mapped: value 
         """
-        expect: false
+        isValid: false
     }
     when_values_are_expected_types: #EnvTest & {
         yaml: """
