@@ -2,12 +2,13 @@ agents:
   queue: default
 
 steps:
-  - label: build
+  - label: Build
+    key: build
     command: |
       go build -o run-test cmd/run-cue-test/main.go
     artifacts:
       - run-test
-  - label: test
+  - label: Test Schema
     depends_on: build
     command: |
       buildkite-agent artifact download run-test
