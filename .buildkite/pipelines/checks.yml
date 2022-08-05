@@ -6,7 +6,7 @@ steps:
     key: build
     command: |
       go build -o run-test cmd/run-cue-test/main.go
-    artifacts:
+    artifact_paths:
       - run-test
   - label: Test Schema
     depends_on: build

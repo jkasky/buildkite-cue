@@ -101,7 +101,7 @@ import (
         concurrency_group: string
     }
 
-    depends_on?: [string, ...string]
+    depends_on?: string | [string, ...string]
 
     env?: #Environment
 
