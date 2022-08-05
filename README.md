@@ -1,5 +1,7 @@
 # Buildkite Cuelang Pipeline
 
+[![Build status](https://badge.buildkite.com/6029fe6771c78d78252796ceb5654db6b8a4d2ed653a127a02.svg)](https://buildkite.com/jkasky/buildkite-cuelang-pipeline-pr-check)
+
 ## Name
 Choose a self-explaining name for your project.
 
