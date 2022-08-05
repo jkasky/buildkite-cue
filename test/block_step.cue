@@ -41,4 +41,27 @@ tests: {
                 - step2
         """
     }
+    when_single_field: #BlockStepTest & {
+        yaml: """
+            block: block with single field
+            fields:
+                - text: one lone field
+                  key: one_field
+        """
+    }
+    when_multiple_fields: #BlockStepTest & {
+        yaml: """
+            block: block with multiple fields
+            fields:
+                - text: text field
+                  key: text_field
+                - select: select field
+                  key: select_field
+                  options:
+                    - label: a
+                      value: "1"
+                    - label: b
+                      value: "2"
+        """
+    }
 }
