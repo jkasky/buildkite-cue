@@ -35,4 +35,14 @@ tests: {
         """
         isValid: false
     }
+    when_select_field_has_invalid_option: #BlockStepFieldTest & {
+        yaml: """
+            select: select field
+            key: s
+            options:
+                - label: ok
+                - badfield: notok
+        """
+        isValid: false
+    }
 }

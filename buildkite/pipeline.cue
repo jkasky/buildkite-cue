@@ -95,11 +95,7 @@ import (
 
     cancel_on_build_failing: bool | *false
 
-    // Concurrency, if present, most be accompanied by concurrency_group
-    concurrency?: int & >0
-    if concurrency != _|_ {
-        concurrency_group: string
-    }
+    #CommandConcurrency
 
     depends_on?: string | [string, ...string]
 
@@ -138,6 +134,13 @@ import (
     timeout_in_minutes?: int & >=0
 
     priority: int | *0
+}
+
+// Concurrency, if present, most be accompanied by concurrency_group
+// concurrency?: int & >0
+#CommandConcurrency: *{} | {
+    concurrency: int & >0
+    concurrency_group: string
 }
 
 #RetryAutomaticCondition: {

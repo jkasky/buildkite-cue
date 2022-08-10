@@ -64,7 +64,7 @@ func main() {
 				var c SchemaTestCase
 				err := value.Decode(&c)
 				if err != nil {
-					fmt.Println("Failed to decode: ", err)
+					fmt.Println("Failed to decode:", err)
 					os.Exit(1)
 				}
 				schema := value.LookupPath(cue.ParsePath("schema"))
