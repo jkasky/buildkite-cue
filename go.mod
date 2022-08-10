@@ -1,4 +1,4 @@
-module gitlab.com/jkasky/buildkite-cue
+module github.com/jkasky/buildkite-cue
 
 go 1.18
 
