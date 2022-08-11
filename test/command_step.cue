@@ -50,4 +50,24 @@ tests: {
         """
         isValid: false
     }
+    when_single_plugin: #CommandStepTest & {
+        yaml: """
+            label: command with a plugin
+            command: run
+            plugins:
+                - fruit#v1.0:
+                    favorite: apple
+        """
+    }
+    when_multiple_plugins: #CommandStepTest & {
+        yaml: """
+            label: command with a plugin
+            command: run
+            plugins:
+                - fruit#v1.0:
+                    favorite: apple
+                - vegetable#v123:
+                    kind: broccoli
+        """
+    }
 }

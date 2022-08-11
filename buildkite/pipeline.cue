@@ -22,7 +22,7 @@ import (
     [string]: bool | number | string
 }
 
-#Step: #BlockStep | #CommandStep | #GroupStep | #InputStep | #TriggerStep | #WaitStep
+#Step: #BlockStep | #CommandStep | #GroupStep | #InputStep | #TriggerStep | #WaitStep | #PluginsStep
 
 #BlockStep: {
     block: string
@@ -105,14 +105,13 @@ import (
 
     key?: string
 
-    // TOOD: implement matrix
-    // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
-    // https://buildkite.com/docs/pipelines/command-step#matrix-attributes
+    plugins?: [#Plugin, ...#Plugin]
 
     parallelism?: int & >1
 
-    // TODO: implement plugins
+    // TOOD: implement matrix
     // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
+    // https://buildkite.com/docs/pipelines/command-step#matrix-attributes
 
     retry?: this={
         automatic?: bool | 
@@ -141,6 +140,16 @@ import (
 #CommandConcurrency: *{} | {
     concurrency: int & >0
     concurrency_group: string
+}
+
+#Plugin: {
+    [string]: {
+        [string]: string
+    } | null
+}
+
+#PluginsStep: {
+    plugins: [#Plugin, ...#Plugin]
 }
 
 #RetryAutomaticCondition: {
