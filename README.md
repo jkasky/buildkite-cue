@@ -1,6 +1,6 @@
 # Buildkite Cuelang Pipeline
 
-[![Build status](https://badge.buildkite.com/6029fe6771c78d78252796ceb5654db6b8a4d2ed653a127a02.svg)](https://buildkite.com/jkasky/buildkite-cuelang-pipeline-pr-check)
+[![Build status](https://badge.buildkite.com/9455999265040531f66fa22f148e9a10e268e5bd7b1365c80d.svg)](https://buildkite.com/jkasky/buildkite-cue-main)
 
 ## Project status
 This is very new and started as an effort to learn more about cuelang with
