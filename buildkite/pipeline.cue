@@ -148,10 +148,9 @@ import (
     concurrency_group: string
 }
 
+// Allow any structure under plugins, which accept any variety of inputs or null.
 #Plugin: {
-    [string]: {
-        [string]: string
-    } | null
+    [string]: [...] | {...} | null
 }
 
 #PluginsStep: {
