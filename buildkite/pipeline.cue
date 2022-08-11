@@ -2,6 +2,7 @@ package buildkite
 
 import (
     "list"
+    "struct"
 )
 
 
@@ -107,11 +108,12 @@ import (
 
     plugins?: [#Plugin, ...#Plugin]
 
-    parallelism?: int & >1
+    // matrix and parallelism attributes are mutally exclusive on the same step
+    if matrix == _|_ {
+        parallelism?: int & >1
+    }
 
-    // TOOD: implement matrix
-    // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
-    // https://buildkite.com/docs/pipelines/command-step#matrix-attributes
+    matrix?: #MatrixArray | #MatrixSetup
 
     retry?: this={
         automatic?: bool | 
@@ -150,6 +152,24 @@ import (
 
 #PluginsStep: {
     plugins: [#Plugin, ...#Plugin]
+}
+
+#MatrixArray: list.MaxItems(10) & [string, ...string]
+
+#MatrixSetup: {
+    setup: struct.MaxFields(10) & {
+        [string]: list.MaxItems(10) & [string, ...string]
+    }
+
+    adjustments?: list.MaxItems(10) & [#MatrixAdjustment, ...#MatrixAdjustment]
+}
+
+#MatrixAdjustment: {
+    with: {
+        [string]: string
+    }
+
+    {soft_fail: bool} | {skip: true} | {}
 }
 
 #RetryAutomaticCondition: {

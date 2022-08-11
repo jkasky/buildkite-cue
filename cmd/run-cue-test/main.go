@@ -45,13 +45,18 @@ func main() {
 
 		for _, t := range instances {
 			if t.Err != nil {
-				fmt.Println("Error loading: ", t.Err)
+				fmt.Printf("Error loading %s: %s\n", f, t.Err)
 				os.Exit(1)
 			}
 
+			cfmt.Printf("{{%s}}::bold\n", t.Files[0].Filename)
+
 			root := ctx.BuildInstance(t)
 
-			cfmt.Printf("{{%s}}::bold\n", t.Files[0].Filename)
+			if root.Err() != nil {
+				cfmt.Printf("{{%s}}::red\n", root.Err())
+				os.Exit(1)
+			}
 
 			tests := root.LookupPath(cue.ParsePath("tests"))
 

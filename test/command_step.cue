@@ -70,4 +70,26 @@ tests: {
                     kind: broccoli
         """
     }
+    when_matrix_and_parallelism_present: #CommandStepTest & {
+        yaml: """
+            label: bad mix of matrix w/ parallelism
+            command: run
+            parallelism: 3
+            matrix:
+                - neo
+                - trinity
+                - morpheus
+        """
+        isValid: false
+    }
+    when_matrix_without_parallelism: #CommandStepTest & {
+        yaml: """
+            label: good matrix
+            command: run {{matrix}}
+            matrix:
+                - neo
+                - trinity
+                - morpheus
+        """
+    }
 }
