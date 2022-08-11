@@ -8,10 +8,12 @@ import (
 
 #Pipeline: {
     agents: #Agents
-    
+
     env?: #Environment
-    
+
     steps: [#Step, ...#Step]
+
+    notify?: #Notify
 }
 
 #Agents: {
@@ -56,9 +58,9 @@ import (
     key: string
 
     required: bool | *true
-    
+
     default?: string
-    
+
     hint?: string
 }
 
@@ -86,7 +88,7 @@ import (
 // https://buildkite.com/docs/pipelines/command-step#command-step-attributes
 #CommandStepOptions: {
     agents?: #Agents
-    
+
     allow_dependency_failure: bool | *false
 
     // TODO: add pattern constraint for paths?
@@ -116,7 +118,7 @@ import (
     matrix?: #MatrixArray | #MatrixSetup
 
     retry?: this={
-        automatic?: bool | 
+        automatic?: bool |
             #RetryAutomaticCondition |
             [#RetryAutomaticCondition, ...#RetryAutomaticCondition]
         manual?: bool | #RetryManualAttributes
@@ -135,6 +137,8 @@ import (
     timeout_in_minutes?: int & >=0
 
     priority: int | *0
+
+    notify?: #Notify
 }
 
 // Concurrency, if present, most be accompanied by concurrency_group
@@ -205,7 +209,7 @@ import (
 
 #InputStep: {
     input: string
-    
+
     prompt?: string
 
     fields: [#InputStepField, ...#InputStepField]
@@ -249,7 +253,7 @@ import (
 
     branch?: string
 
-    meta_data?: #Environment 
+    meta_data?: #Environment
 
     env?: #Environment
 }
@@ -267,4 +271,61 @@ import (
     depends_on?: [string, ...string]
 
     allow_dependency_failure: bool | *false
+}
+
+#Notify: [#Notification, ...#Notification]
+
+#Notification: #NotifyBasecamp | #NotifyEmail | #NotifyGitHub | #NotifyPagerDuty | #NotifySlack | #NotifyWebhook
+
+#NotifyOpts: {
+    if?: string
+}
+
+// TODO: validate URL
+#NotifyBasecamp: {
+    basecamp_campfire: string
+
+    #NotifyOpts
+}
+
+// TODO: validate email pattern
+#NotifyEmail: {
+    email: string
+
+    #NotifyOpts
+}
+
+#NotifyGitHub: {
+    github_commit_status: {
+        context: string
+    }
+
+    #NotifyOpts
+}
+
+#NotifyPagerDuty: {
+    pagerduty_change_event: string
+
+    #NotifyOpts
+}
+
+#NotifySlack: {
+    // TODO: validate channel or user pattern [workspace]<#|@>string
+    {
+        slack: string
+    } | {
+        slack: null
+        channels: [string, ...string]
+    }
+
+    message: string
+
+    #NotifyOpts
+}
+
+#NotifyWebhook: {
+    // TODO: validate URL pattern
+    webhook: string
+
+    #NotifyOpts
 }
