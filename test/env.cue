@@ -1,7 +1,7 @@
 package buildkite_test
 
 import (
-    "gitlab.com/jkasky/buildkite-cue/buildkite"
+    "github.com/jkasky/buildkite-cue/buildkite"
 )
 
 #EnvTest: {
