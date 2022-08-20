@@ -15,12 +15,38 @@ import (
 )
 
 type SchemaTestSuite struct {
-	Cases []SchemaTestCase
+	FilePath string
+	cases    *[]*SchemaTestCase
+}
+
+func (s *SchemaTestSuite) Append(c *SchemaTestCase) {
+	if s.cases == nil {
+		a := []*SchemaTestCase{c}
+		s.cases = &a
+		return
+	}
+	*s.cases = append(*s.cases, c)
+}
+
+func (s *SchemaTestSuite) Cases() []*SchemaTestCase {
+	if s.cases == nil {
+		return []*SchemaTestCase{}
+	}
+	return *s.cases
 }
 
 type SchemaTestCase struct {
+	Name    string
 	Yaml    string
 	IsValid bool
+
+	schema   cue.Value
+	cueValue cue.Value
+}
+
+func runTest(c *SchemaTestCase) error {
+	bytes := []byte(c.Yaml)
+	return yaml.Validate(bytes, c.schema)
 }
 
 func main() {
@@ -36,9 +62,12 @@ func main() {
 			return nil
 		})
 
+	suites := []*SchemaTestSuite{}
 	ctx := cuecontext.New()
 
 	for _, f := range files {
+		suite := SchemaTestSuite{FilePath: f}
+		suites = append(suites, &suite)
 		entrypoints := []string{f}
 
 		instances := load.Instances(entrypoints, nil)
@@ -49,8 +78,6 @@ func main() {
 				os.Exit(1)
 			}
 
-			cfmt.Printf("{{%s}}::bold\n", t.Files[0].Filename)
-
 			root := ctx.BuildInstance(t)
 
 			if root.Err() != nil {
@@ -60,45 +87,53 @@ func main() {
 
 			tests := root.LookupPath(cue.ParsePath("tests"))
 
-			var passCount, failCount int
-
 			itr, _ := tests.Fields()
 			for itr.Next() {
-				label := itr.Label()
 				value := itr.Value()
-				var c SchemaTestCase
+				c := SchemaTestCase{Name: itr.Label()}
 				err := value.Decode(&c)
 				if err != nil {
 					fmt.Println("Failed to decode:", err)
 					os.Exit(1)
 				}
-				schema := value.LookupPath(cue.ParsePath("schema"))
-				bytes := []byte(c.Yaml)
-				err = yaml.Validate(bytes, schema)
-				if err != nil && c.IsValid {
-					failCount++
-					cfmt.Printf("[{{FAIL}}::red|bold] %s\n", label)
-					fmt.Println(value.Source().Pos())
-					details := errors.Details(err, nil)
-					cfmt.Printf("{{%s}}::red", details)
-				} else if err == nil && !c.IsValid {
-					failCount++
-					cfmt.Printf("[{{FAIL}}::red|bold] %s\n", label)
-					fmt.Println(value.Source().Pos())
-					fmt.Printf("Expected YAML to be invalid:\n%s\n", c.Yaml)
-				} else {
-					passCount++
-					cfmt.Printf("[{{PASS}}::lightGreen|bold] %s\n", label)
-				}
+				c.schema = value.LookupPath(cue.ParsePath("schema"))
+				c.cueValue = value
+				suite.Append(&c)
 			}
+		}
+	}
 
-			totalCount := passCount + failCount
-			if failCount > 0 && passCount > 0 {
-				cfmt.Printf("{{%d/%d}}::bold passed, {{%d}}::bold|red failed\n",
-					passCount, totalCount, failCount)
+	for _, s := range suites {
+		cfmt.Printf("{{%s}}::bold\n", s.FilePath)
+
+		// Run the tests
+		var passCount, failCount int
+
+		for _, c := range s.Cases() {
+			err := runTest(c)
+			if err != nil && c.IsValid {
+				failCount++
+				cfmt.Printf("[{{FAIL}}::red|bold] %s\n", c.Name)
+				fmt.Println(c.cueValue.Source().Pos())
+				details := errors.Details(err, nil)
+				cfmt.Printf("{{%s}}::red", details)
+			} else if err == nil && !c.IsValid {
+				failCount++
+				cfmt.Printf("[{{FAIL}}::red|bold] %s\n", c.Name)
+				fmt.Println(c.cueValue.Source().Pos())
+				fmt.Printf("Expected YAML to be invalid:\n%s\n", c.Yaml)
 			} else {
-				cfmt.Printf("{{%d}}::bold passed\n", passCount)
+				passCount++
+				cfmt.Printf("[{{PASS}}::lightGreen|bold] %s\n", c.Name)
 			}
+		}
+
+		totalCount := passCount + failCount
+		if failCount > 0 && passCount > 0 {
+			cfmt.Printf("{{%d/%d}}::bold passed, {{%d}}::bold|red failed\n",
+				passCount, totalCount, failCount)
+		} else {
+			cfmt.Printf("{{%d}}::bold passed\n", passCount)
 		}
 	}
 }
