@@ -4,7 +4,7 @@
 
 ## Project status
 This is very new and started as an effort to learn more about cuelang with
-something practical. The current schema supports almost the entire Buildkite
+something practical. The current schema does support the entire Buildkite
 pipeline configuration.
 
 ## References
