@@ -7,7 +7,7 @@ import (
 
 
 #Pipeline: {
-    agents: #Agents
+    agents?: #Agents
 
     env?: #Environment
 
@@ -17,7 +17,7 @@ import (
 }
 
 #Agents: {
-    queue: string | *"default"
+    queue?: string | *"default"
     [string]: string
 }
 
