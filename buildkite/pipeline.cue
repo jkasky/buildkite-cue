@@ -89,14 +89,14 @@ import (
 #CommandStepOptions: {
     agents?: #Agents
 
-    allow_dependency_failure: bool | *false
+    allow_dependency_failure?: bool | *false
 
     // TODO: add pattern constraint for paths?
     artifact_paths?: string | [string, ...string]
 
     branches?: string
 
-    cancel_on_build_failing: bool | *false
+    cancel_on_build_failing?: bool | *false
 
     #CommandConcurrency
 
@@ -136,7 +136,7 @@ import (
 
     timeout_in_minutes?: int & >=0
 
-    priority: int | *0
+    priority?: int | *0
 
     notify?: #Notify
 }
@@ -191,7 +191,7 @@ import (
 #GroupStep: {
     group: string | *null
 
-    allow_dependency_failure: bool | *false
+    allow_dependency_failure?: bool | *false
 
     depends_on?: [string, ...string]
 
@@ -204,23 +204,25 @@ import (
     steps: [#GroupStepMemberStep, ...#GroupStepMemberStep]
 }
 
-#GroupStepMemberStep: #CommandStep | #TriggerStep | #WaitStep
+#GroupStepMemberStep: #CommandStep | #InputStep | #TriggerStep | #WaitStep
 
 #InputStep: {
     input: string
 
     prompt?: string
 
-    fields: [#InputStepField, ...#InputStepField]
+    fields?: [#InputStepField, ...#InputStepField]
 
     branches?: string
 
     if?: string
 
+    key?: string
+
     // TODO: make a type for this?
     depends_on?: string | [string, ...string]
 
-    allow_dependency_failure: bool | *false
+    allow_dependency_failure?: bool | *false
 }
 
 #InputStepField: #StepTextField | #StepSelectField
@@ -240,7 +242,7 @@ import (
 
     depends_on?: string | [string, ...string]
 
-    allow_dependency_failure: bool | *false
+    allow_dependency_failure?: bool | *false
 
     skip?: bool | string
 }
@@ -269,7 +271,7 @@ import (
     // TODO: see if this can validate whether the strings match named steps
     depends_on?: [string, ...string]
 
-    allow_dependency_failure: bool | *false
+    allow_dependency_failure?: bool | *false
 }
 
 #Notify: [#Notification, ...#Notification]
