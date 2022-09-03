@@ -51,11 +51,12 @@ import (
 
 #BlockStepField: #StepTextField | #StepSelectField
 
+#MetaDataKey: string & =~"^(?:[[:alnum:]]|-|_|/)+$"
+
 #StepTextField: {
     text: string
 
-    // TODO: make type for key that validates pattern
-    key: string
+    key: #MetaDataKey
 
     required: bool | *true
 
@@ -67,7 +68,7 @@ import (
 #StepSelectField: {
     select: string
 
-    key: string
+    key: #MetaDataKey
 
     options: [#StepSelectFieldOption, ...#StepSelectFieldOption]
 }

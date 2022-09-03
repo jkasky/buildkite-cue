@@ -106,7 +106,6 @@ func main() {
 	for _, s := range suites {
 		cfmt.Printf("{{%s}}::bold\n", s.FilePath)
 
-		// Run the tests
 		var passCount, failCount int
 
 		for _, c := range s.Cases() {
