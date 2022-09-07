@@ -70,6 +70,10 @@ import (
 
     key: #MetaDataKey
 
+    required: bool | *true
+
+    hint?: string
+
     options: [#StepSelectFieldOption, ...#StepSelectFieldOption]
 }
 
