@@ -27,6 +27,15 @@ import (
 
 #Step: #BlockStep | #CommandStep | #GroupStep | #InputStep | #TriggerStep | #WaitStep | #PluginsStep
 
+#StepKey: string
+
+#StepDependency: {
+    step: #StepKey
+    allow_failure?: bool
+}
+
+#StepDependencies: #StepKey | [#StepKey, ...#StepKey] | [#StepDependency, ...#StepDependency] | null
+
 #BlockStep: {
     block: string
 
@@ -40,8 +49,7 @@ import (
 
     if?: string
 
-    // TODO: make a type for this?
-    depends_on?: string | [string, ...string]
+    depends_on?: #StepDependencies
 
     // TODO: possible to validate this is a unique value within the pipeline?
     key?: string
@@ -105,7 +113,7 @@ import (
 
     #CommandConcurrency
 
-    depends_on?: string | [string, ...string]
+    depends_on?: #StepDependencies
 
     env?: #Environment
 
@@ -198,7 +206,7 @@ import (
 
     allow_dependency_failure?: bool | *false
 
-    depends_on?: [string, ...string]
+    depends_on?: #StepDependencies
 
     key?: string
 
@@ -224,8 +232,7 @@ import (
 
     key?: string
 
-    // TODO: make a type for this?
-    depends_on?: string | [string, ...string]
+    depends_on?: #StepDependencies
 
     allow_dependency_failure?: bool | *false
 }
@@ -245,7 +252,7 @@ import (
 
     if?: string
 
-    depends_on?: string | [string, ...string]
+    depends_on?: #StepDependencies
 
     allow_dependency_failure?: bool | *false
 
@@ -273,8 +280,7 @@ import (
 
     if?: string
 
-    // TODO: see if this can validate whether the strings match named steps
-    depends_on?: [string, ...string]
+    depends_on?: #StepDependencies
 
     allow_dependency_failure?: bool | *false
 }
