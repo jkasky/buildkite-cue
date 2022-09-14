@@ -22,4 +22,7 @@ buildkite.#Pipeline & {
                 """
 		},
 	]
+    notify: [
+        {github_commit_status: context: "buildkite-checks"}
+    ]
 }
