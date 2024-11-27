@@ -1,37 +1,37 @@
 package buildkite_test
 
 import (
-    "list"
+	"list"
 
-    y "encoding/yaml"
+	y "encoding/yaml"
 
-    "github.com/jkasky/buildkite-cue/buildkite"
+	"github.com/jkasky/buildkite"
 )
 
 #MatrixArrayTest: {
-    schema: buildkite.#MatrixArray
-    isValid: bool | *true
-    yaml: string | *"---"
+	schema:  buildkite.#MatrixArray
+	isValid: bool | *true
+	yaml:    string | *"---"
 }
 
 tests: {
-    when_empty: #MatrixArrayTest & {
-        isValid: false
-    }
-    when_single_element: #MatrixArrayTest & {
-        yaml: """
-            - a single item
-        """
-    }
-    when_multible_elements: #MatrixArrayTest & {
-        yaml: """
-            - first item
-            - second item
-            - last item
-        """
-    }
-    when_has_more_than_10_items: #MatrixArrayTest & {
-        yaml: y.Marshal([for n in list.Range(0, 11, 1) {"i\(n)"}])
-        isValid: false
-    }
+	when_empty: #MatrixArrayTest & {
+		isValid: false
+	}
+	when_single_element: #MatrixArrayTest & {
+		yaml: """
+			    - a single item
+			"""
+	}
+	when_multible_elements: #MatrixArrayTest & {
+		yaml: """
+			    - first item
+			    - second item
+			    - last item
+			"""
+	}
+	when_has_more_than_10_items: #MatrixArrayTest & {
+		yaml: y.Marshal([for n in list.Range(0, 11, 1) {"i\(n)"}])
+		isValid: false
+	}
 }
