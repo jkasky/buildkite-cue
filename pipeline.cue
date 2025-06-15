@@ -210,7 +210,7 @@ import (
 
 	label?: string
 
-	notify?: string
+	notify?: #Notify
 
 	steps: [#GroupStepMemberStep, ...#GroupStepMemberStep]
 }

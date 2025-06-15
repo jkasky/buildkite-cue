@@ -103,6 +103,8 @@ func main() {
 		}
 	}
 
+	var totalFailures, totalPasses int
+
 	for _, s := range suites {
 		cfmt.Printf("{{%s}}::bold\n", s.FilePath)
 
@@ -134,5 +136,17 @@ func main() {
 		} else {
 			cfmt.Printf("{{%d}}::bold passed\n", passCount)
 		}
+
+		totalFailures += failCount
+		totalPasses += passCount
+	}
+
+	// Print overall summary
+	totalTests := totalPasses + totalFailures
+	if totalFailures > 0 {
+		cfmt.Printf("\n{{Total: %d/%d passed, %d failed}}::bold\n", totalPasses, totalTests, totalFailures)
+		os.Exit(1)
+	} else {
+		cfmt.Printf("\n{{Total: %d passed}}::bold\n", totalPasses)
 	}
 }
